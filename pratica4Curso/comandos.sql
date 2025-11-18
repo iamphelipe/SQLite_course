@@ -68,3 +68,15 @@ SELECT * FROM "produtos" WHERE "nome" LIKE '%pro%'; /* retorna produtos que term
 SELECT * FROM "produtos" WHERE "nome" LIKE '%pro';
 SELECT * FROM "produtos" WHERE "nome" LIKE '% pro';
 SELECT * FROM "produtos" WHERE "nome" LIKE '% _TB%'; /* retorna produtos com 1 caractere antes de "TB" */
+
+
+SELECT * FROM "produtos" WHERE "preco" BETWEEN 20000 AND 30000;
+SELECT * FROM "produtos" WHERE "criado" BETWEEN '2049-06' AND '2049-08';
+SELECT * FROM "produtos" WHERE "criado" NOT BETWEEN '2049-06' AND '2049-08';
+
+SELECT * FROM "produtos" WHERE "categoria" IN ('notebook', 'hardware');
+SELECT * FROM "produtos" WHERE "categoria" NOT IN ('notebook', 'hardware');
+
+SELECT * FROM "produtos" WHERE "categoria" = 'notebook' OR "categoria" = 'hardware';
+
+SELECT * FROM "produtos" WHERE "nome" LIKE '%notebook%' OR "nome" LIKE '%process%'
