@@ -58,3 +58,13 @@ SELECT * FROM "produtos" WHERE "categoria" IS NULL;
 SELECT * FROM "produtos" WHERE "categoria" IS NOT NULL;
 
 SELECT * FROM "produtos" WHERE "lancamento" IS FALSE; 
+
+SELECT * FROM "produtos" WHERE "nome" LIKE 'impressora 3d mini';
+SELECT * FROM "produtos" WHERE "nome" NOT LIKE 'impressora 3d mini';
+SELECT * FROM "produtos" WHERE "nome" LIKE '%3d%'; /* retorna produtos que tem 3d no meio */
+
+SELECT * FROM "produtos" WHERE "nome" LIKE 'notebook%'; /* retorna produtos que começam com "notebook" */
+SELECT * FROM "produtos" WHERE "nome" LIKE '%pro%'; /* retorna produtos que termina com "pro" */
+SELECT * FROM "produtos" WHERE "nome" LIKE '%pro';
+SELECT * FROM "produtos" WHERE "nome" LIKE '% pro';
+SELECT * FROM "produtos" WHERE "nome" LIKE '% _TB%'; /* retorna produtos com 1 caractere antes de "TB" */
