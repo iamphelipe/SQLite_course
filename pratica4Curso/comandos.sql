@@ -104,3 +104,27 @@ SELECT lower("nome") as "nome_min", "nome" FROM "produtos" WHERE "nome_min" LIKE
 SELECT trim(lower("nome")) as "nome_min", "nome" FROM "produtos" WHERE "nome_min" = trim(lower('      foNE BLUETooth'));
 
 SELECT substr("nome", 1, 5), "nome" FROM "produtos";
+
+SELECT date('now');
+SELECT time('now');
+SELECT time('now', '-03:00');
+SELECT time('now', 'localtime');
+
+SELECT datetime('now', '+7 years');
+SELECT strftime('%Y/%m/%d  %H:%M:%S', 'now');
+
+SELECT * FROM "produtos" WHERE "criado" BETWEEN date('2049-01-01') AND date('2049-01-01', '+6 month');
+
+SELECT "criado" FROM "produtos";
+
+SELECT strftime('%Y-%m', "criado") FROM "produtos";
+
+CREATE TABLE "livros" (
+  "id" INTEGER PRIMARY KEY,
+  "nome" TEXT NOT NULL,
+  "criado" TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+) STRICT;
+DROP TABLE "livros";
+
+INSERT INTO "livros" ("nome") VALUES ('SQLite para Iniciantes');
+INSERT INTO "livros" ("nome") VALUES (trim('  SQLite Avançado         '));
