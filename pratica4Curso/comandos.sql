@@ -79,4 +79,28 @@ SELECT * FROM "produtos" WHERE "categoria" NOT IN ('notebook', 'hardware');
 
 SELECT * FROM "produtos" WHERE "categoria" = 'notebook' OR "categoria" = 'hardware';
 
-SELECT * FROM "produtos" WHERE "nome" LIKE '%notebook%' OR "nome" LIKE '%process%'
+SELECT * FROM "produtos" WHERE "nome" LIKE '%notebook%' OR "nome" LIKE '%process%';
+
+SELECT count() FROM "produtos"; /* retorna o numero de linhas */
+
+SELECT count() as "total" FROM "produtos"; /* retorna o numero de linhas OBS: EU renomeei o nome da funçao para total */
+
+SELECT * FROM "produtos";
+SELECT sum("estoque") as "total_produtos" FROM "produtos"; /* retorna a soma do estoque de produtos*/
+SELECT sum("preco" * "estoque") as "valor_total_produtos" FROM "produtos"; 
+
+SELECT avg("preco") as "media_preco" FROM "produtos"; /* retorna a media de preco, ou seja ele vai somar e depois fazer a media */
+SELECT round(avg("preco")) as "media_preco" FROM "produtos"; /* arredondando */
+
+SELECT min("preco") as "produto_barato", "nome" FROM "produtos"; /* retorna o valor do preco mais baixo */
+SELECT max("preco") as "produto_caro", "nome" FROM "produtos"; /* retorna o valor do preco mais alto */
+
+SELECT length("nome") as "tamanho", "nome" FROM "produtos"; /* retorna o tamanho das palavras */
+
+SELECT length("nome") as "tamanho", "nome" FROM "produtos" WHERE "tamanho" > 10;
+
+SELECT lower("nome") as "nome_min", "nome" FROM "produtos" WHERE "nome_min" LIKE '%fone%';
+
+SELECT trim(lower("nome")) as "nome_min", "nome" FROM "produtos" WHERE "nome_min" = trim(lower('      foNE BLUETooth'));
+
+SELECT substr("nome", 1, 5), "nome" FROM "produtos";
