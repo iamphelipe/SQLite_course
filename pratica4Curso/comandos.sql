@@ -128,3 +128,16 @@ DROP TABLE "livros";
 
 INSERT INTO "livros" ("nome") VALUES ('SQLite para Iniciantes');
 INSERT INTO "livros" ("nome") VALUES (trim('  SQLite Avançado         '));
+
+SELECT * FROM "produtos" ORDER BY "preco" ASC LIMIT 5;
+SELECT * FROM "produtos" ORDER BY "preco" DESC LIMIT 5;
+SELECT * FROM "produtos" ORDER BY "categoria", "preco" DESC;
+SELECT * FROM "produtos" ORDER BY "criado";
+
+SELECT * FROM produtos;
+SELECT count(*) as total, "categoria" FROM "produtos" GROUP BY "categoria" ORDER BY "total";
+SELECT avg("preco") as preco_medio, "categoria" FROM "produtos" GROUP BY "categoria" ORDER BY "preco_medio";
+
+SELECT strftime('%Y', "criado") as ano, count(*) as total from "produtos" GROUP BY "ano";
+
+select "categoria", count(*) as "total" from "produtos" GROUP BY "categoria" HAVING total > 2;
