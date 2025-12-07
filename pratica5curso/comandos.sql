@@ -1,32 +1,21 @@
 --database: ./db.sqlite
+DROP TABLE usuario;
 
-CREATE TABLE "cursos" (
+CREATE TABLE "usuario" (
     "id" INTEGER PRIMARY KEY,
-    "nome" TEXT
+    "email" TEXT NOT NULL COLLATE NOCASE UNIQUE,
+    "nome" TEXT NOT NULL,
+    "tipo" TEXT NOT NULL DEFAULT 'usuario' CHECK ("tipo" IN ('usuario', 'admin')),
+    "vitalicio" INTEGER DEFAULT 0 CHECK ("vitalicio" IN (0, 1)),
+    "criado" TEXT DEFAULT CURRENT_TIMESTAMP
 ) STRICT;
 
-CREATE TABLE "aulas" (
-    "id" INTEGER PRIMARY KEY,
-    "curso_id" INTEGER,
-    "nome" TEXT,
-    FOREIGN KEY("curso_id") REFERENCES "cursos" ("id") ON DELETE CASCADE ON UPDATE CASCADE
-) STRICT;
 
-INSERT INTO "cursos" ("nome")
-    VALUES ('HTML');
+INSERT INTO "usuario" ("email", "nome")
+    VALUES ('phelipe@email', 'Phelipe');
 
-INSERT INTO "cursos" ("nome")
-    VALUES ('CSS');
+INSERT INTO "usuario" ("email", "nome", "vitalicio")
+    VALUES ('dudu@email', 'Dudu', 1);
 
-INSERT INTO "cursos" ("nome")
-    VALUES ('JS');
-
-INSERT INTO "aulas" ("curso_id", "nome")
-    VALUES (1, 'Fundamentos do HTML');
-
-DELETE FROM "cursos" WHERE "id" = 1;
-
-UPDATE "cursos" SET ("id") = 1 WHERE id = 3;
-
-
-DROP TABLE aulas
+INSERT INTO "usuario" ("email", "nome", "tipo")
+    VALUES ('Andre@email', 'Andre', 'admin');
