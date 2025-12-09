@@ -63,3 +63,47 @@ SELECT * FROM "produtos" WHERE "criado" BETWEEN '2049-06' AND '2049-09';
 
 SELECT * FROM "produtos" WHERE "categoria" IN ('notebook', 'hardware');
 SELECT * FROM "produtos" WHERE "categoria" = ('notebook', 'hardware');
+
+SELECT * FROM "produtos";
+
+SELECT count() as "total" FROM "produtos";
+
+SELECT sum("estoque") as "total_produtos" FROM "produtos";
+
+SELECT sum("preco" * "estoque") as  "valor_total_produtos" FROM "produtos";
+
+SELECT round(avg("preco")) AS "media_preco" FROM "produtos";
+
+SELECT min("preco") AS "produto_barato", * FROM "produtos";
+
+SELECT length("nome") AS "tamanho", "nome" FROM "produtos" WHERE "tamanho" > 10;
+
+SELECT lower("nome") AS "nome_min", "nome" FROM "produtos" WHERE "nome_min" = lower('fonE bluetooth');
+SELECT trim(lower("nome")) AS "nome_min", "nome" FROM "produtos" WHERE "nome_min" = trim(lower('    fonE bluetooth'));
+
+SELECT substr("nome", 1, 3), nome FROM "produtos";
+
+SELECT date('now');
+
+SELECT time('now', 'localtime');
+
+SELECT datetime('now', '+7 days');
+
+SELECT strftime( '%Y/%m/%d %H:%M:%S', 'now');
+
+SELECT * FROM produtos;
+SELECT * FROM "produtos" WHERE "criado" BETWEEN DATE('2049-01-01') AND DATE('2049-01-01', '+6 month');
+
+SELECT strftime('%Y/%m/%d', "criado") FROM "produtos";
+
+drop table livros;
+CREATE TABLE "livros" (
+  "id" INTEGER PRIMARY KEY,
+  "nome" TEXT NOT NULL,
+  "criado" TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+) STRICT;
+
+SELECT * FROM "livros";
+
+INSERT INTO "livros" ("nome")
+  VALUES ('SQLite para Iniciantes')
