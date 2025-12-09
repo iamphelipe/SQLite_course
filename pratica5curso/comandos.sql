@@ -55,3 +55,11 @@ SELECT * FROM "produtos" WHERE "nome" LIKE 'notebook%';
 SELECT * FROM "produtos" WHERE "nome" LIKE '%pro';
 SELECT * FROM "produtos" WHERE "nome" LIKE '%pro%';
 SELECT * FROM "produtos" WHERE "nome" LIKE '%_TB%';
+
+
+SELECT * FROM "produtos" WHERE "preco" BETWEEN 20000 AND 30000;
+
+SELECT * FROM "produtos" WHERE "criado" BETWEEN '2049-06' AND '2049-09';
+
+SELECT * FROM "produtos" WHERE "categoria" IN ('notebook', 'hardware');
+SELECT * FROM "produtos" WHERE "categoria" = ('notebook', 'hardware');
