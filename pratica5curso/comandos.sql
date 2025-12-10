@@ -106,4 +106,30 @@ CREATE TABLE "livros" (
 SELECT * FROM "livros";
 
 INSERT INTO "livros" ("nome")
-  VALUES ('SQLite para Iniciantes')
+  VALUES ('SQLite para Iniciantes');
+
+
+
+
+
+SELECT * FROM "produtos" ORDER BY "preco" DESC;
+SELECT * FROM "produtos" ORDER BY "categoria", "preco" DESC;
+
+SELECT * FROM "produtos" ORDER BY "criado" DESC;
+ SELECT count(*) AS  "total", categoria FROM "produtos" GROUP BY "categoria" ORDER BY "total";
+ SELECT avg("preco") AS  "preco_medio", categoria FROM "produtos" GROUP BY "categoria" ORDER BY "preco_medio";
+
+ SELECT * FROM produtos;
+
+ SELECT strftime('%Y, %m' ,"criado") AS "ano", count(*) AS "total" FROM "produtos" GROUP BY "ano";
+
+SELECT "categoria", count(*) AS "total" FROM "produtos" GROUP BY "categoria" HAVING "total" > 2;
+
+SELECT avg("preco") FROM "produtos";
+
+SELECT * FROM "produtos" WHERE "preco" > (SELECT avg("preco") FROM "produtos");
+
+WITH "preco_medio" AS (
+  SELECT avg("preco") as "medio" FROM "produtos"
+)
+SELECT * FROM "produtos" WHERE "preco" > (SELECT "medio" FROM "preco_medio");
