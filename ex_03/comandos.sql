@@ -238,7 +238,7 @@ VALUES
 SELECT "l"."lesson_order", "c"."slug" AS "aulas", "c"."title" AS "curso", *
 FROM "lessons" AS "l"
 JOIN "courses" AS "c" ON "l"."course_id" = "c"."id"
-WHERE "c"."slug" = "html-para-iniciantes" ORDER BY "l"."lesson_order"
+WHERE "c"."slug" = 'html-para-iniciantes' ORDER BY "l"."lesson_order"
 ;
 
 
@@ -276,8 +276,8 @@ ORDER BY "total_seconds_curso" DESC
 ;
 
 -- 6 Utilize a query 4, mostre o título do curso no lugar do course_id.
--- INCOMPLETO!!!!
-SELECT sum("l"."seconds") AS "total_seconds_curso", "c"."title" AS "curso" ,*
+
+SELECT "c"."title" AS "curso", sum("l"."seconds") AS "total_seconds_curso" ,*
 FROM "lessons" AS "l"
 JOIN "courses" AS "c" ON "l"."course_id" = "c"."id"
 GROUP BY "c"."title" ORDER BY "l"."seconds" DESC;
@@ -288,37 +288,19 @@ JOIN "users" AS "u" ON "c"."user_id" = "u"."id"
 WHERE "u"."email" = 'mariana@email.com';
 
 -- 8 Selecione todas as aulas completas ou não pelo usuário lucas@email.com. Mostre o título da aula e se está completa ou não.
--- VERIFICAR DEPOIS!
-SELECT "l"."title", * FROM "lessons_completed" AS "lc"
-JOIN "users" AS "u" ON "lc"."user_id" = "u"."id"
-JOIN "lessons" AS "l" ON "lc"."lesson_id" = "l"."id"
-WHERE "u"."email" = 'lucas@email.com';
 
-
-
-
-
-
-
-
-
-
-
-
-
+SELECT "l"."title", "lc"."completed" FROM "lessons" AS "l"
+left JOIN "lessons_completed" AS "lc" ON "l"."id" = "lc"."lesson_id"
+AND "lc"."user_id" = (SELECT "id" FROM "users" WHERE "email" = 'lucas@email.com')
+;
 
 -- 9 Selecione as aulas anterior/próxima da aula funcoes-e-escopo. Retorne 3 aulas (se existirem): a anterior, a atual e a próxima. Utilize o lesson_order para isso.
 
-SELECT "l"."title", "l"."lesson_order" FROM "lessons" AS "l"
-WHERE "l"."lesson_order" < ((
-  
-    SELECT "l"."lesson_order" FROM "lessons" AS "l"
-    WHERE "l"."slug" = 'funcoes-e-escopo'
-  
-) + 1) AND (
-  (
-        SELECT "l"."lesson_order" FROM "lessons" AS "l"
-    WHERE "l"."slug" = 'funcoes-e-escopo'
-  )
-) - 1
-; 
+SELECT * FROM "lessons"
+WHERE "course_id" = (SELECT "course_id" FROM "lessons" WHERE "slug" = 'funcoes-e-escopo')
+AND "lesson_order" IN (
+      (SELECT "lesson_order" FROM "lessons" WHERE "slug" = 'funcoes-e-escopo') - 1, 
+      (SELECT "lesson_order" FROM "lessons" WHERE "slug" = 'funcoes-e-escopo'), 
+      (SELECT "lesson_order" FROM "lessons" WHERE "slug" = 'funcoes-e-escopo') + 1 
+)
+ORDER BY "lesson_order"
