@@ -251,3 +251,48 @@ JOIN "lessons" AS "b"
 ON "a"."slug" = "b"."slug"
 WHERE "a"."id" != "b"."id"
 ;
+
+SELECT count(*) FROM "users";
+
+CREATE TABLE "stats" (
+  "name" TEXT PRIMARY KEY,
+  "value" INTEGER NOT NULL
+) STRICT;
+
+INSERT INTO "stats" ("name", "value") VALUES ('user_count', (SELECT count(*) FROM "users"));
+
+CREATE TRIGGER "trg_users_insert"
+AFTER INSERT ON "users"
+BEGIN
+  UPDATE "stats" SET "value" = "value" + 1 WHERE "name" = 'user_count';
+END;
+
+CREATE TRIGGER "trg_users_delete"
+AFTER DELETE ON "users"
+BEGIN 
+  UPDATE "stats" SET "value" = "value" - 1 WHERE "name" = 'user_count';
+END;
+
+SELECT * FROM "sqlite_schema" WHERE "type" = 'trigger';
+
+
+INSERT INTO "users" ("name", "password", "email") VALUES ('Phelipe', '102030', 'phelipe@email.com');
+DELETE FROM "users" WHERE name = 'Phelipe';
+
+CREATE TABLE "user_changes" (
+  "id" INTEGER PRIMARY KEY,
+  "user_id" INTEGER NOT NULL,
+  "old_email" TEXT NOT NULL,
+  "new_email" TEXT NOT NULL,
+  FOREIGN KEY ("user_id") REFERENCES "users" ("id")
+) STRICT;
+
+CREATE TRIGGER "trg_log_email_change"
+BEFORE UPDATE OF "email" ON "users"
+WHEN lower(OLD."email") <> lower(NEW."email")
+BEGIN
+  INSERT INTO "user_changes" ("user_id", "old_email", "new_email")
+  VALUES (OLD."id", OLD."email", NEW."email");
+END;
+
+UPDATE "users" SET "email" = 'carlos@email.com' WHERE "id" = 1;
