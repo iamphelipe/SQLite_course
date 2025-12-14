@@ -296,3 +296,34 @@ BEGIN
 END;
 
 UPDATE "users" SET "email" = 'carlos@email.com' WHERE "id" = 1;
+
+
+-- TRIGGER MAIS COMPLEXO
+
+SELECT count() FROM "lessons_completed" WHERE "user_id" = 11 AND "course_id" = 1;
+SELECT count() FROM "lessons" WHERE "course_id" = 1;
+
+CREATE TRIGGER "trg_create_certificate"
+AFTER INSERT ON "lessons_completed"
+WHEN (
+  (SELECT count() FROM "lessons_completed" WHERE "user_id" = NEW."user_id" AND "course_id" = NEW."course_id")
+  =
+  (SELECT count() FROM "lessons" WHERE "course_id" = NEW."course_id")
+)
+BEGIN
+  INSERT OR IGNORE INTO "certificates" ("id", "user_id", "course_id")
+  VALUES (lower(hex(randomblob(16))), NEW."user_id", NEW."course_id");
+END;
+
+INSERT INTO "lessons_completed" ("user_id", "course_id", "lesson_id")
+VALUES
+  (11, 1, 1),
+  (11, 1, 2),
+  (11, 1, 3),
+  (11, 1, 4),
+  (11, 1, 5);
+
+SELECT * FROM "sqlite_schema" WHERE "type" = 'trigger';
+
+-- Para deletar um trigger, exemplo abaixo:
+DROP TRIGGER "trg_users_insert";
