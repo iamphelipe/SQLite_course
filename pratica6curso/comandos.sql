@@ -327,3 +327,44 @@ SELECT * FROM "sqlite_schema" WHERE "type" = 'trigger';
 
 -- Para deletar um trigger, exemplo abaixo:
 DROP TRIGGER "trg_users_insert";
+
+
+
+SELECT *, strftime('%Y', "created") AS "ano" FROM "users";
+
+CREATE TABLE "users2" (
+  "id" INTEGER PRIMARY KEY,
+  "nome" TEXT NOT NULL,
+  "sobrenome" TEXT NOT NULL,
+  "nome_completo" TEXT AS ("nome" || ' ' || "sobrenome") STORED
+) STRICT;
+
+INSERT INTO "users2" ("nome", "sobrenome") 
+VALUES ('Phelipe', 'Guimaraes');
+
+CREATE VIEW "lessons_completed_full" AS
+SELECT "u"."email", "c"."title" AS "course", "l"."title" AS "lesson", "lc"."completed" FROM "lessons_completed" AS "lc"
+JOIN "users" AS "u" ON "lc"."user_id" = "u"."id"
+JOIN "courses" AS "c" ON "c"."id" = "lc"."course_id"
+JOIN "lessons" AS "l" ON "l"."id" = "lc"."lesson_id";
+
+SELECT * FROM "sqlite_schema";
+
+SELECT * FROM "lessons_completed_full" WHERE "email" = 'pedro@email.com';
+
+PRAGMA pragma_list;
+PRAGMA table_list;
+PRAGMA function_list;
+PRAGMA page_size;
+PRAGMA page_count;
+
+PRAGMA journal_mode = WAL;
+PRAGMA synchronous = NORMAL;
+
+PRAGMA busy_timeout = 5000;
+PRAGMA cache_size = 2000;
+PRAGMA temp_store = MEMORY;
+
+PRAGMA analysis_limit = 1000;
+
+PRAGMA optimize = 0x10002;
