@@ -1,5 +1,14 @@
 -- database: ./db.sqlite
 
+
+-- json_set cria ou substitui;
+
+-- json_insert só cria se não existir;
+
+-- json_replace só substitui;
+
+-- json_remove apaga.
+
 CREATE TABLE "users" (
     "id" INTEGER PRIMARY KEY,
     "email" TEXT NOT NULL UNIQUE
@@ -49,4 +58,42 @@ SELECT '[3,2,4,6,8]' ->> '$[2]';
 SELECT json_array('pt','en','es') ->> '$[2]';
 SELECT json_set(json_array('pt','en','es'), '$[1]', 'it');
 
-SELECT * FROM "users_config"
+SELECT * FROM "users_config";
+
+CREATE TABLE "users" (
+    "id" INTEGER PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL UNIQUE,
+    "ads" INTEGER NOT NULL DEFAULT 0 CHECK("ads" IN (0, 1)),
+    "subscription" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+) STRICT;
+
+INSERT INTO "users" ("name", "email", "ads")
+VALUES ('Phelipe', 'phelipe@email.com', 0);
+
+INSERT INTO "users" ("name", "email", "ads")
+VALUES ('Phelipe', 'phelipe@email.com', 1)
+ON CONFLICT("email") DO NOTHING;
+
+INSERT INTO "users" ("name", "email", "ads")
+VALUES ('Phelipe', 'phelipe@email.com', 0)
+ON CONFLICT("email") DO UPDATE SET "ads" = excluded."ads"
+WHERE excluded."ads" != 0;
+
+INSERT OR IGNORE INTO "users" ("name", "email", "ads")
+VALUES ('Phelipe Novo', 'phelipe@email.com', 0);
+
+INSERT OR REPLACE INTO "users" ("name", "email", "ads")
+VALUES ('Phelipe Novo', 'phelipe@email.com', 0);
+
+
+CREATE TABLE "certificates" (
+  "id" TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+  "user_id" INTEGER NOT NULL,
+  "course_id" INTEGER NOT NULL,
+  "completed" TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+) WITHOUT ROWID, STRICT;
+
+INSERT INTO "certificates" ("user_id", "course_id") VALUES (1,1) RETURNING "id";
+SELECT * FROM "certificates" ;
