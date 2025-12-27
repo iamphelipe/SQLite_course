@@ -347,3 +347,12 @@ DELETE FROM "sessions" WHERE "token" = '13A9205413AA2F4C';
 DELETE FROM "users" WHERE "id" = 1;
 
 DELETE FROM "sessions" WHERE "expires" < strftime('%s', 'now');
+
+
+SELECT * from "users";
+
+SELECT "u"."name", "u"."email" FROM "lessons_completed" AS "lc"
+JOIN "users" AS "u" ON "u"."id" = "lc"."user_id"
+JOIN "courses" AS "c" ON "c"."id" = "lc"."course_id"
+JOIN "lessons" AS "l" ON "l"."id" = "lc"."lesson_id"
+WHERE "u"."id" = 6
