@@ -326,4 +326,24 @@ SELECT (sum("seconds") / 60) AS "total_minutos" FROM "lessons" WHERE course_id =
 SELECT count("l"."title") AS "total", count("lc"."completed") AS "completed" FROM "lessons" AS "l"
 LEFT JOIN "lessons_completed" AS "lc" ON "lc"."lesson_id" = "l"."id" 
 AND "lc"."user_id" = 1
-WHERE "l"."course_id" = 1
+WHERE "l"."course_id" = 1;
+
+SELECT * FROM users;
+UPDATE "users" SET "name" = 'Guilherme Sampaio', "updated" = CURRENT_TIMESTAMP WHERE "id" = 4;
+UPDATE "users" SET "password_hash" = '123456' WHERE "id" = 4;
+
+UPDATE "sessions" SET "expires" = strftime('%s', 'now', '+15 days') WHERE "token" = 'D43D842EC7ED5C45';
+
+CREATE TRIGGER "set_users_updated"
+AFTER UPDATE ON "users"
+BEGIN
+    UPDATE "users" SET "updated" = CURRENT_TIMESTAMP WHERE "id" = NEW."id";
+END;
+
+UPDATE "users" SET "email" = 'guilherme22@email.com', "updated" = CURRENT_TIMESTAMP WHERE "id" = 4;
+
+
+DELETE FROM "sessions" WHERE "token" = '13A9205413AA2F4C';
+DELETE FROM "users" WHERE "id" = 1;
+
+DELETE FROM "sessions" WHERE "expires" < strftime('%s', 'now');
