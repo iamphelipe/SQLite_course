@@ -284,3 +284,46 @@ VALUES
 (9,2),
 (10,3),
 (10,4);
+
+CREATE VIEW "lessons_completed_full" AS
+SELECT "u"."id" AS 'id', "u"."name", "u"."email", "c"."title" AS 'course', "l"."title" AS 'lessons', "lc".*
+FROM "lessons_completed" AS "lc"
+JOIN "users" AS "u" ON "u"."id" = "lc"."user_id"
+JOIN "courses" AS "c" ON "c"."id" = "lc"."course_id"
+JOIN "lessons" AS "l" ON "l"."id" = "lc"."lesson_id";
+
+CREATE VIEW "certificates_full" AS
+SELECT "c"."id", "c"."user_id", "u"."name", "c"."course_id", "co"."title", "co"."hours", "co"."lessons", "c"."completed"
+FROM "certificates" AS "c"
+JOIN "users" AS "u" ON "c"."user_id" = "u"."id"
+JOIN "courses" AS "co" ON "co"."id" = "c"."course_id"
+;
+
+SELECT * FROM "lessons_completed_full" WHERE "id" = 1;
+SELECT * FROM "certificates_full" WHERE "user_id" = 1;
+
+CREATE VIEW "lesson_nav" AS
+SELECT "cl"."slug" AS "current_slug", "l".* FROM "lessons" AS "cl"
+JOIN "lessons" AS "l" ON "l"."course_id" = "cl"."course_id"
+AND "l"."order" BETWEEN "cl"."order" - 1 AND "cl"."order" + 1
+ORDER BY "l"."order";
+
+SELECT * FROM "lesson_nav" WHERE "course_id" = 1 AND "current_slug" = 'tags-basicas';
+
+drop VIEW lesson_nav;
+
+SELECT "name" FROM "users" WHERE "email" = 'phelipe@email.com';
+
+SELECT * FROM "lessons" WHERE "course_id" = 
+(SELECT "id" FROM "courses" WHERE "slug" = 'javascript-completo') ORDER BY "ORDER";
+
+SELECT * FROM "lessons" WHERE "free" = 1;
+
+SELECT * FROM "certificates_full" WHERE "id" = '00dbe324be33fe14';
+
+SELECT (sum("seconds") / 60) AS "total_minutos" FROM "lessons" WHERE course_id = 1;
+
+SELECT count("l"."title") AS "total", count("lc"."completed") AS "completed" FROM "lessons" AS "l"
+LEFT JOIN "lessons_completed" AS "lc" ON "lc"."lesson_id" = "l"."id" 
+AND "lc"."user_id" = 1
+WHERE "l"."course_id" = 1
